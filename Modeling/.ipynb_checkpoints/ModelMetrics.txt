@@ -1,0 +1,53 @@
+
+Number of colors = 2000
+Number of hops = 4
+
+
+tuned_models = [LGBMRegressor(boosting_type='gbdt', class_weight=None,
+               colsample_bytree=0.45921506474872353, importance_type='split',
+               learning_rate=0.003605978989205916, max_depth=-1,
+               min_child_samples=20, min_child_weight=0.001, min_split_gain=0.0,
+               n_estimators=997, n_jobs=-1, num_leaves=171, objective=None,
+               random_state=None, reg_alpha=0.06136193030050688, reg_lambda=0.0,
+               silent=True, subsample=0.664374000848817,
+               subsample_for_bin=200000, subsample_freq=1),
+ LGBMRegressor(boosting_type='gbdt', class_weight=None,
+               colsample_bytree=0.19190373976042552, importance_type='split',
+               learning_rate=0.018880733945270692, max_depth=-1,
+               min_child_samples=20, min_child_weight=0.001, min_split_gain=0.0,
+               n_estimators=772, n_jobs=-1, num_leaves=412, objective=None,
+               random_state=None, reg_alpha=0.1319602189105627, reg_lambda=0.0,
+               silent=True, subsample=0.953435263598222,
+               subsample_for_bin=200000, subsample_freq=1),
+ LGBMRegressor(boosting_type='gbdt', class_weight=None,
+               colsample_bytree=0.0846115062976256, importance_type='split',
+               learning_rate=0.061904626017968235, max_depth=-1,
+               min_child_samples=20, min_child_weight=0.001, min_split_gain=0.0,
+               n_estimators=710, n_jobs=-1, num_leaves=218, objective=None,
+               random_state=None, reg_alpha=0.09722107305351997, reg_lambda=0.0,
+               silent=True, subsample=0.7625401046034898,
+               subsample_for_bin=200000, subsample_freq=1),
+ LGBMRegressor(boosting_type='gbdt', class_weight=None,
+               colsample_bytree=0.10234165146414909, importance_type='split',
+               learning_rate=0.021876318417714605, max_depth=-1,
+               min_child_samples=20, min_child_weight=0.001, min_split_gain=0.0,
+               n_estimators=574, n_jobs=-1, num_leaves=193, objective=None,
+               random_state=None, reg_alpha=0.08093256266597965, reg_lambda=0.0,
+               silent=True, subsample=0.9986613307559011,
+               subsample_for_bin=200000, subsample_freq=1)]
+
+
+tuned_weights = np.array([0.23494501, 0.50427143, 0.16934516, 0.0914384])
+
+
+Performace Metrics
+End to end this notebook took ~2 hours to run. The bulk of the time cost (~80%) is in the ColorRefinement algorithm. 
+
+Because it is deterministic you can significantly speed up testing by saving the embeddings. 
+
+Performace is estimated by training 5 models each on only 80% of the dataset. 
+
+Area Under the Precision Recall Curve (AUPRC) is always measured on the same out-of-sample validation set.
+
+AUPRC on the validation set = [0.767, 0.003] (mean, std)
+
