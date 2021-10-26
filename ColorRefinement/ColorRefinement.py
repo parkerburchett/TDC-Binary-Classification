@@ -76,7 +76,7 @@ Pseudocode code:
        see reate_color_hash_function()
 Interpretation:
   For color_0 a when two nodes, either within the same graph or between graphs, have the same color C, they are very likely the same node.
-      Because hashing is deterministic there is no possibility of a False Negative, but a 1/K possibility of a False Positive due to random hash collisions.
+      Because hashingfrom pysmiles import read_smilesis deterministic there is no possibility of a False Negative, but a 1/K possibility of a False Positive due to random hash collisions.
   color_1: contains all the 1-hop information around the node.
       If two nodes have the same color it is very likely that they have the same 1 hop neighborhood.
       The probability of a false positive here is still very close to zero but I haven't worked it out yet.
@@ -110,20 +110,19 @@ def _create_color_hash_function(num_buckets: int):
     return hash_function
 
 
-def _convert_node_view_to_node_color_dict(node_data: nx.classes.reportviews.NodeDataView, num_buckets: int)-> dict:
+def _compute_inital_node_colors(node_data: nx.classes.reportviews.NodeDataView, num_buckets: int)-> dict:
     """
         Set the inital color of each of the nodes based on hashing the node attributes and a number of buckets. 
 
         Returns a dictionary of inital color to make the nodes
     """
-
     node_data_as_dict = dict(node_data)
     node_names = list(node_data_as_dict.keys())
     node_starting_colors = dict()
 
     for index, node_num in enumerate(node_names):
-        node_attributes = tuple(sorted(list(node_data_as_dict[node_names[index]].items())))
-        inital_node_color = hash(node_attributes) % num_buckets
+        node_attributes = sorted(list(node_data_as_dict[node_names[index]].items()))
+        inital_node_color = hash(str(node_attributes)) % num_buckets
         node_starting_colors[node_num] = inital_node_color
 
     return node_starting_colors
@@ -131,7 +130,7 @@ def _convert_node_view_to_node_color_dict(node_data: nx.classes.reportviews.Node
 
 def _create_inital_color_graph(graph: nx.classes.graph.Graph, num_buckets:int) ->nx.classes.graph.Graph:
 
-    starting_colors = _convert_node_view_to_node_color_dict(graph.nodes.data(True), num_buckets)
+    starting_colors = _compute_inital_node_colors(graph.nodes.data(True), num_buckets)
     color_graph = copy.deepcopy(graph)
     nx.set_node_attributes(color_graph, starting_colors, name="color_0")
 
@@ -245,4 +244,11 @@ def create_hop_feature_dfs(graphs:list, num_hops: int, num_colors:int) -> list:
 
 
 
+def tester():
+    from pysmiles import read_smiles
+
+    G = read_smiles('CC(=O)NCCC1=CNc2c1cc(OC)cc2')
+    color_graph = _create_inital_color_graph(G, 10)
+
+tester()
 
