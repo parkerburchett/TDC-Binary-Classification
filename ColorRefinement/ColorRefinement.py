@@ -101,7 +101,8 @@ Usages:
 def _create_color_hash_function(num_buckets: int):
 
     def get_next_node_color(node_color:int, neighbor_colors:list)-> int:
-        pre_hash_color = str(node_color) + str(np.prod(neighbor_colors))
+        neighbor_colors.sort()
+        pre_hash_color = str(node_color)+(str(neighbor_colors))
         new_color = hash(pre_hash_color) % num_buckets
         return new_color
 
